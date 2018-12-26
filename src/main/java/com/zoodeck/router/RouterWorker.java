@@ -3,20 +3,19 @@ package com.zoodeck.router;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.zoodeck.common.config.ConfigService;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import com.zoodeck.router.config.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.zoodeck.router.ConstantsService.*;
+import static com.zoodeck.common.ConstantsService.*;
 
 public class RouterWorker {
     private static Logger logger = LoggerFactory.getLogger(RouterWorker.class);
@@ -51,9 +50,9 @@ public class RouterWorker {
 
     private void setupRabbit() throws Exception {
         connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost(configService.getHost());
-        connectionFactory.setUsername(configService.getUsername());
-        connectionFactory.setPassword(configService.getPassword());
+        connectionFactory.setHost(configService.get(RABBIT_HOST));
+        connectionFactory.setUsername(configService.get(RABBIT_USER));
+        connectionFactory.setPassword(configService.get(RABBIT_PASS));
 
         connection = connectionFactory.newConnection();
         channel = connection.createChannel();
